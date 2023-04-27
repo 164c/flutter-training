@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 void main() {
+  debugPaintSizeEnabled = true;
   runApp(const MyApp());
 }
 
@@ -22,10 +24,96 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const Session1(title: 'Flutter Demo Home Page'),
     );
+  }
+}
+
+class Session1 extends StatelessWidget {
+  const Session1({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final pad = Flexible(
+      child: Container(
+        color: Colors.cyan,
+      ),
+    );
+
+    return Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: Row(
+          children: [
+            pad,
+            Flexible(
+                flex: 2,
+                child: Column(
+                  children: [
+                    pad,
+                    placeholder(context),
+                    Flexible(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 80),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              textButton(context, 'Close'),
+                              textButton(context, 'Reload'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+            ),
+            pad,
+          ],
+        ));
+  }
+
+  Widget placeholder(BuildContext context) {
+    var placeholder = SizedBox(
+      height: MediaQuery.of(context).size.width / 2,
+      width: MediaQuery.of(context).size.width / 2,
+      child: const Placeholder(),
+    );
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        placeholder,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            degree(context, Colors.blue),
+            degree(context, Colors.red),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget degree(BuildContext context, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Text('** ℃',
+          style:
+              Theme.of(context).textTheme.labelLarge?.copyWith(color: color)),
+    );
+  }
+
+  Widget textButton(BuildContext context, String text) {
+    return TextButton(
+        onPressed: () {
+          print("Container clicked");
+        },
+        child: Text(text, style: Theme.of(context).textTheme.labelLarge));
   }
 }
 
@@ -100,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ],
         ),
